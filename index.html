@@ -680,22 +680,35 @@
                         <option value="3pk">3pk (3-Pack)</option>
                         <option value="4pk">4pk (4-Pack)</option>
                         <option value="6pk">6pk (6-Pack)</option>
+                        <option value="8pk">8pk (8-Pack)</option>
+                        <option value="9pk">9pk (9-Pack)</option>
+                        <option value="12pk">12pk (12-Pack)</option>
                         <option value="Case">Case</option>
                         <option value="Case (6ea)">Case (6ea)</option>
+                        <option value="Case (8ea)">Case (8ea)</option>
+                        <option value="Case (9ea)">Case (9ea)</option>
                         <option value="Case (10ea)">Case (10ea)</option>
                         <option value="Case (12ea)">Case (12ea)</option>
                         <option value="Case (24ea)">Case (24ea)</option>
                         <option value="Box">Box</option>
                         <option value="Display">Display</option>
                         <option value="Display (6ea)">Display (6ea)</option>
+                        <option value="Display (8ea)">Display (8ea)</option>
+                        <option value="Display (9ea)">Display (9ea)</option>
                         <option value="Display (12ea)">Display (12ea)</option>
                         <option value="Display (24ea)">Display (24ea)</option>
                         <option value="Bag">Bag</option>
+                        <option value="Bag 3.5oz">Bag 3.5oz</option>
                         <option value="Bulk Bag">Bulk Bag</option>
+                        <option value="Bulk Bag 1lb">Bulk Bag 1lb</option>
                         <option value="LB">LB (Pound)</option>
                         <option value="oz">oz (Ounce)</option>
+                        <option value="LITER">LITER</option>
+                        <option value="14KG BUCKET">14KG BUCKET</option>
+                        <option value="30.8LB Case">30.8LB Case</option>
+                        <option value="55LB Bag">55LB Bag</option>
                     </select>
-                    <div class="help-text">Select what you're converting to</div>
+                    <div class="help-text">Shows only pack types available for this item</div>
                 </div>
 
                 <div class="conversion-preview" id="conversionPreview"></div>
@@ -1104,7 +1117,7 @@
             display.innerHTML = `<div class="uom-indicator">📦 Converting FROM: ${record.uom}</div>`;
             display.style.display = 'block';
             
-            // Update available To UOMs for this item
+            // Update available To UOMs for this item (smart filtering enabled!)
             updateAvailableToUOMs(itemCode, uom);
             
             // Update lots
@@ -1121,7 +1134,7 @@
         function updateAvailableToUOMs(itemCode, currentUom) {
             const toUomSelect = document.getElementById('toUom');
             
-            // Find all UOM variants for this item
+            // Find all UOM variants for this item (including zero-stock)
             const itemRecords = inventory.filter(r => r.item === itemCode);
             const availableUOMs = [...new Set(itemRecords.map(r => r.uom))];
             
@@ -1142,10 +1155,10 @@
             const availableCount = availableUOMs.length - 1; // Exclude current
             if (availableCount > 0) {
                 document.querySelector('#toUom + .help-text').textContent = 
-                    `${availableCount} conversion option(s) available for this item`;
+                    `${availableCount} pack type(s) available for this item`;
             } else {
                 document.querySelector('#toUom + .help-text').textContent = 
-                    'No other UOM variants available for this item';
+                    'No other pack types available for this item';
                 toUomSelect.innerHTML = '<option value="">No conversions available</option>';
             }
         }
